@@ -1,111 +1,164 @@
-$(document).ready(function(){
+//questions object
+let questions = [{
+    question: "What does HTML stand for?",
+    picture: "../assets/images/HTML.jpg",
+    choiceA: "Help Todd Make Lasagna",
+    choiceB: "Hyper Text Markup Language",
+    choiceC: "wrong",
+    choiceD: "wrong",
+    correctAnswer: "B"
+},{
+    question: "What does CSS stand for?",
+    picture: "../assets/images/HTML.jpg",
+    choiceA: "right",
+    choiceB: "wrong",
+    choiceC: "wrong",
+    choiceD: "wrong",
+    correctAnswer: "A"
+},{
+    question: "What does AJAX stand for?",
+    picture: "../assets/images/HTML.jpg",
+    choiceA: "wrong",
+    choiceB: "wrong",
+    choiceC: "wrong",
+    choiceD: "right",
+    correctAnswer: "D"
+},{
+    question: "What does  stand for?",
+    picture: "../assets/images/HTML.jpg",
+    choiceA: "wrong",
+    choiceB: "wrong",
+    choiceC: "right",
+    choiceD: "wrong",
+    correctAnswer: "C"
+},{
+    question: "What does  stand for?",
+    picture: "../assets/images/HTML.jpg",
+    choiceA: "wrong",
+    choiceB: "right",
+    choiceC: "wrong",
+    choiceD: "wrong",
+    correctAnswer: "B"
+},{
+    question: "What does  stand for?",
+    picture: "../assets/images/HTML.jpg",
+    choiceA: "wrong",
+    choiceB: "wrong",
+    choiceC: "wrong",
+    choiceD: "right",
+    correctAnswer: "D"
+}];
+//declare variables
+let hasGamestarted = false;
+const lastQuestion = questions.length-1;
 
-    const questions = [{
-        question: "How many toes does a human have?",
-        choices: ["10", "3", "8,", "5"],
-        answer: 0,
-        gif: ""
-    },
-    {
-        question: "What color is a strawberry?",
-        choices: ["yellow", "green", "red", "pink"],
-        answer: 2,
-        gif: ""
-    },
-    {
-        question: "How fast do fingernails grow?",
-        choices: ["1/2in week", "1 mm day", "1 foot per year", "2 in a month"],
-        answer: 1,
-        gif: ""
-    }];
+//used for gauge unit
+let questionTime = 10;
+let gaugeWidth = 150;
+let gaugeUnit = gaugeWidth / questionTime;
 
-    let rightCount;
-    let wrongCount;
-    let unanswerCount;
-    let timer;
-    let intervalId;
-    let userGuess;
-    let gamePlaying = false;
-    const questionCount = questions.length;
-    let pick;
-    let index;
-    let newArray = [];
-    let holder = [];
 
-    //click the start button to run the game
-    $('#start').on("click", function(){
-        $('#start').hide();
+let qIndex = 0;
+let counter = 0;
+let score = 0;
+let TIMER;
+
+
+function startGame(){
+    //hide the start button
+    $('#start').hide();
+    //change hasGamestarted to TRUE
+    if(!hasGamestarted){
+        hasGamestarted = true;
+    };
+    displayQuestion();
+    showProgress();
+    startCounter();
+    TIMER = setInterval(startCounter, 1000);
+};
+
+function displayQuestion(){
+    $(".quiz-div").show();
+    let q = questions[qIndex];
+    //display question
+    $("#question").html(q.question);
+
+    //display options in their respective divs
+    $("#A").html(q.choiceA);
+    $("#B").html(q.choiceB);
+    $("#C").html(q.choiceC);
+    $("#D").html(q.choiceD);
+
+    //display picture. We want this to appear when time is up or user makes a guess
+    $("#imgQ").attr("src", q.picture);
+    $('#imgQ').show();
+};
+
+//function to create placeholders to mark the progress of the game 
+function showProgress(){
+    for(var qIndex = 0; qIndex <= lastQuestion; qIndex++){
+        $("#progress").append("<div class= 'progressMark'  id=" + qIndex + "></div>");
+    };
+};
+
+function startCounter(){
+    if(counter <= questionTime){
+        $("#count").html(counter);
+        
+        //counter gauge that increases in size
+        $('#counter-gauge').width((counter * gaugeUnit) + "px");
+        counter++
+     }else{
+         counter = 0;
+         wrongAnswer();
+
+         if(qIndex < lastQuestion){
+             qIndex++;
+             displayQuestion();
+         }else{
+             clearInterval(TIMER);
+             printScore();
+         };
+     };
+};
+
+function checkAnswer(answer){
+    if(answer == questions[qIndex].correctAnswer){
+        console.log("right on")
+         score++;
+         console.log(score);
+         rightAnswer();
+     }else{
+         wrongAnswer();
+     }
+     counter = 0;
+     if(qIndex < lastQuestion){
+        qIndex++;
         displayQuestion();
-        runTimer();
-        //store question objects in the holder array
-        for(var i = 0; i < questions.length; i++){
-            holder.push(questions[i]);
-        }
-        console.log(holder);
-    });
+     }
+     else{
+         clearInterval(TIMER);
+         printScore();
+     }
+};
 
-    function runTimer(){
-        if(!gamePlaying){
-            gamePlaying = true;
-            intervalId = setInterval(countDown, 1000);
-        }
-    };
+function wrongAnswer(){
+    $("#" + qIndex).css("background-color", "red");
+};
 
-    function countDown(){
-        $('#count-down').html("<h3>Time left: " + timer + "</h3>");
-        timer--;
+function rightAnswer(){
+    $("#" + qIndex).css("background-color", "blue");
+};
 
-            if (timer === 0) {
-                unanswerCount++;
-                stop();
-                $("#answer-block").html("<p>Time is up! The correct answer was: " + pick.choice[pick.answer] + "</p>");
-                hidepicture();
-        };  
+function printScore(){
+    //show score div on page
+    $("#score").show();
 
-    };
+    //hide the counter and gauge
+    $("#count").hide();
+    $("#counter-gauge").hide();
 
-    function stop(){
-        gamePlaying = false;
-        clearInterval(intervalId);
-    };
-
-    function displayQuestion(){
-        index = Math.floor(Math.random()* questions.length);
-        pick = questions[index];
-
-        $('#question-div').html("<h2>" + pick.question + "</h2>");
-        for(var i = 0; i < pick.choices.length; i++){
-            var userChoice = $('div');
-            userChoice.addClass('answer-choice');
-            userChoice.html(pick, choice[i]);
-
-            userChoice.attrib("guess-value", i);
-            $('#answer-block').append(userChoice);
-        };
-    };
-
-    $('.answer-choice').on("click", function(){
-        userGuess = parseInt($(this)).attr("guess-value");
-
-        if(userGuess === pick.answer){
-            stop();
-            correctCount++;
-            userGuess="";
-            $("#answer-block").html("<p>Correct!</p>");
-            hidepicture();
-        }else{
-            stop();
-            wrongCount++;
-            userGuess="";
-            $("#answer-block").html("<p>Wrong! The correct answer is " + pick.choice[pick.answer] + "</p>");
-            hidepicture();            
-        }
-    });
-
-
-
-
-
-
-
-});
+    //calculate percentage
+    let scorePercent = Math.round(100 * score/ questions.length);
+    $("#score").html(scorePercent);
+};
