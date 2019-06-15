@@ -1,7 +1,7 @@
 //questions object
 let questions = [{
     question: "What does HTML stand for?",
-    picture: "../assets/images/HTML.jpg",
+    picture: "https://giphy.com/embed/12hdeiFVeNm0Ug",
     choiceA: "Help Todd Make Lasagna",
     choiceB: "Hyper Text Markup Language",
     choiceC: "wrong",
@@ -9,7 +9,7 @@ let questions = [{
     correctAnswer: "B"
 },{
     question: "What does CSS stand for?",
-    picture: "../assets/images/HTML.jpg",
+    picture: "https://giphy.com/embed/8T2CMRKs6wKic",
     choiceA: "right",
     choiceB: "wrong",
     choiceC: "wrong",
@@ -17,7 +17,7 @@ let questions = [{
     correctAnswer: "A"
 },{
     question: "What does AJAX stand for?",
-    picture: "../assets/images/HTML.jpg",
+    picture: "https://giphy.com/embed/Gf3fU0qPtI6uk",
     choiceA: "wrong",
     choiceB: "wrong",
     choiceC: "wrong",
@@ -25,7 +25,7 @@ let questions = [{
     correctAnswer: "D"
 },{
     question: "What does  stand for?",
-    picture: "../assets/images/HTML.jpg",
+    picture: "https://giphy.com/embed/UHEKI6FICUSIw",
     choiceA: "wrong",
     choiceB: "wrong",
     choiceC: "right",
@@ -33,7 +33,7 @@ let questions = [{
     correctAnswer: "C"
 },{
     question: "What does  stand for?",
-    picture: "../assets/images/HTML.jpg",
+    picture: "https://giphy.com/embed/xThuWp2hJABbmc20Ew",
     choiceA: "wrong",
     choiceB: "right",
     choiceC: "wrong",
@@ -41,7 +41,7 @@ let questions = [{
     correctAnswer: "B"
 },{
     question: "What does  stand for?",
-    picture: "../assets/images/HTML.jpg",
+    picture: "https://giphy.com/embed/T1Brve7Wp6gg",
     choiceA: "wrong",
     choiceB: "wrong",
     choiceC: "wrong",
@@ -51,12 +51,7 @@ let questions = [{
 //declare variables
 let hasGamestarted = false;
 const lastQuestion = questions.length-1;
-
-//used for gauge unit
 let questionTime = 10;
-let gaugeWidth = 150;
-let gaugeUnit = gaugeWidth / questionTime;
-
 
 let qIndex = 0;
 let counter = 0;
@@ -65,20 +60,25 @@ let TIMER;
 
 
 function startGame(){
-    //hide the start button
-    $('#start').hide();
     //change hasGamestarted to TRUE
     if(!hasGamestarted){
         hasGamestarted = true;
     };
+    //hide the start button
+    $('#start').hide();
     displayQuestion();
-    showProgress();
     startCounter();
     TIMER = setInterval(startCounter, 1000);
+    
+    //display picture. We want this to appear when time is up or user makes a guess
 };
 
 function displayQuestion(){
     $(".quiz-div").show();
+    $('#imgQ').show();
+    console.log(questions[qIndex].picture);
+    $("#imgQ").attr("src = '" + questions[qIndex].picture + "'");
+    //$('#imgQ').attr("src=", questions[qIndex].picture);
     let q = questions[qIndex];
     //display question
     $("#question").html(q.question);
@@ -89,30 +89,26 @@ function displayQuestion(){
     $("#C").html(q.choiceC);
     $("#D").html(q.choiceD);
 
-    //display picture. We want this to appear when time is up or user makes a guess
-    $("#imgQ").attr("src", q.picture);
-    $('#imgQ').show();
 };
 
-//function to create placeholders to mark the progress of the game 
-function showProgress(){
-    for(var qIndex = 0; qIndex <= lastQuestion; qIndex++){
-        $("#progress").append("<div class= 'progressMark'  id=" + qIndex + "></div>");
-    };
-};
+// function to create placeholders to mark the progress of the game 
+// function showGif(){
+//     for(var qIndex = 0; qIndex <= lastQuestion; qIndex++){
+//         $("#progress").append("<div class= 'progressMark'  id=" + qIndex + "></div>");
+//     };
+// };
 
 function startCounter(){
     if(counter <= questionTime){
         $("#count").html(counter);
-        
-        //counter gauge that increases in size
-        $('#counter-gauge').width((counter * gaugeUnit) + "px");
-        counter++
+         counter++
+         
      }else{
          counter = 0;
          wrongAnswer();
 
          if(qIndex < lastQuestion){
+            questionTime = 0;
              qIndex++;
              displayQuestion();
          }else{
@@ -126,8 +122,8 @@ function checkAnswer(answer){
     if(answer == questions[qIndex].correctAnswer){
         console.log("right on")
          score++;
-         console.log(score);
          rightAnswer();
+
      }else{
          wrongAnswer();
      }
@@ -143,11 +139,13 @@ function checkAnswer(answer){
 };
 
 function wrongAnswer(){
-    $("#" + qIndex).css("background-color", "red");
+
+    //print in the message div
+    $("#message").text("Nope! The correct answer is: ")//give time limit then disappear
 };
 
 function rightAnswer(){
-    $("#" + qIndex).css("background-color", "blue");
+    $("#message").text("Nice! You pick is correct!")//give time limit then disappear
 };
 
 function printScore(){
@@ -156,9 +154,23 @@ function printScore(){
 
     //hide the counter and gauge
     $("#count").hide();
-    $("#counter-gauge").hide();
 
     //calculate percentage
     let scorePercent = Math.round(100 * score/ questions.length);
-    $("#score").html(scorePercent);
+    $("#score").html(scorePercent + "%");
+    //endGame();
 };
+// function endGame(){
+//     qIndex = 0;
+//     counter = 0;
+//     score = 0;
+//     hasGamestarted = false;
+//     playAgain();
+// };
+
+// function playAgain(){
+
+//     $("#clear").show();
+//     $("#message").empty();
+
+// };

@@ -19,6 +19,7 @@
                     <h1 class="display-5">Trivia Game</h1>
                     <hr class="my-3">
                     <a class="btn btn-primary btn-lg" onclick = "startGame()" id="start">Let's Play!</a>
+                    <a class="btn btn-primary btn-lg" onclick = "startGame()" id="clear" style="display: none;">Play Again!</a> 
                 </div>
             </div>
 
@@ -28,7 +29,8 @@
                     <div class="row">
                         <!--image container-->
                         <div class="col">
-                            <img src="" class="img-fluid" id="imgQ" style="display: none;">
+                            <div id="message"></div>
+                            <iframe src="https://giphy.com/embed/12hdeiFVeNm0Ug" id="imgQ" width="480" height="360" frameBorder="0" class="giphy-embed" style="display: none;" allowFullScreen></iframe>
                         </div>
                         <!--Question/choices container-->
                         <div class="col">
@@ -49,8 +51,8 @@
                             </div>
                             <br>
                             <br>
-                            <div id="counter-gauge">
-                            </div>
+                            <!-- <div id="counter-gauge">
+                            </div> -->
                         </div>
                     </div>
                 </div>
