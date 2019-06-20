@@ -1,52 +1,58 @@
 //questions object
 let questions = [{
-    question: "What does HTML stand for?",
+    question: "What is Chandlers middle name?",
     picture: "https://giphy.com/embed/12hdeiFVeNm0Ug",
-    choiceA: "Help Todd Make Lasagna",
-    choiceB: "Hyper Text Markup Language",
-    choiceC: "wrong",
-    choiceD: "wrong",
-    correctAnswer: "B"
+    choiceA: "Joe",
+    choiceB: "Jeff",
+    choiceC: "Robert",
+    choiceD: "Ethan",
+    correctAnswer: "B",
+    correctAnswerText: "Robert!"
 },{
-    question: "What does CSS stand for?",
+    question: "What kind of car did Pheobe have?",
     picture: "https://giphy.com/embed/8T2CMRKs6wKic",
-    choiceA: "right",
-    choiceB: "wrong",
-    choiceC: "wrong",
-    choiceD: "wrong",
-    correctAnswer: "A"
+    choiceA: "Taxi",
+    choiceB: "School Bus",
+    choiceC: "Limo",
+    choiceD: "Honda Accord",
+    correctAnswer: "A",
+    correctAnswerText: "Taxi!"
 },{
-    question: "What does AJAX stand for?",
+    question: "What is the name of the famous cafe?",
     picture: "https://giphy.com/embed/Gf3fU0qPtI6uk",
-    choiceA: "wrong",
-    choiceB: "wrong",
-    choiceC: "wrong",
-    choiceD: "right",
-    correctAnswer: "D"
+    choiceA: "Central Park Cafe",
+    choiceB: "Perk Cafe",
+    choiceC: "Central Coffee",
+    choiceD: "Central Perk",
+    correctAnswer: "D",
+    correctAnswerText: "Central Perk!"
 },{
-    question: "What does  stand for?",
+    question: "Who was Ross's 1st wife?",
     picture: "https://giphy.com/embed/UHEKI6FICUSIw",
-    choiceA: "wrong",
-    choiceB: "wrong",
-    choiceC: "right",
-    choiceD: "wrong",
-    correctAnswer: "C"
+    choiceA: "Linda",
+    choiceB: "Josephine",
+    choiceC: "Carol",
+    choiceD: "Catherine",
+    correctAnswer: "C",
+    correctAnswerText: "Carol!"
 },{
-    question: "What does  stand for?",
+    question: "What was joey's career?",
     picture: "https://giphy.com/embed/xThuWp2hJABbmc20Ew",
-    choiceA: "wrong",
-    choiceB: "right",
-    choiceC: "wrong",
-    choiceD: "wrong",
-    correctAnswer: "B"
+    choiceA: "Musician",
+    choiceB: "Actor",
+    choiceC: "Statistical Analyist",
+    choiceD: "Singer",
+    correctAnswer: "B",
+    correctAnswerText: "Actor!"
 },{
-    question: "What does  stand for?",
+    question: "What was Monica's childhood dog's name?",
     picture: "https://giphy.com/embed/T1Brve7Wp6gg",
-    choiceA: "wrong",
-    choiceB: "wrong",
-    choiceC: "wrong",
-    choiceD: "right",
-    correctAnswer: "D"
+    choiceA: "Co-Co",
+    choiceB: "Boo-Boo",
+    choiceC: "Ci-Ci",
+    choiceD: "Chi-Chi",
+    correctAnswer: "D",
+    correctAnswerText: "Chi-Chi!"
 }];
 //declare variables
 let hasGamestarted = false;
@@ -139,13 +145,12 @@ function checkAnswer(answer){
 };
 
 function wrongAnswer(){
-
     //print in the message div
-    $("#message").text("Nope! The correct answer is: ")//give time limit then disappear
+    $("#message").html("<h5> Wrong. The correct answer is: </h5><h2>" + questions[qIndex].correctAnswerText + "</h2>");//give time limit then disappear
 };
 
 function rightAnswer(){
-    $("#message").text("Nice! You pick is correct!")//give time limit then disappear
+    $("#message").html("<h5>Nice! You pick is correct!</h5>")//give time limit then disappear
 };
 
 function printScore(){
